@@ -9,4 +9,5 @@ add_executable(untitled 02/line-interest.c
         03/ascii.c
         03/multitable.c
         03/factorial.c
-        03/resistance.c)
+        03/resistance.c
+        03/easter.c)
