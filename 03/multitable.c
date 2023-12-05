@@ -40,4 +40,5 @@ void body() {
 int main_multi() {
     header();
     body();
+    return 0;
 }
