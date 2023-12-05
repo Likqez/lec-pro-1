@@ -4,8 +4,8 @@
 //
 float input_resistance(char text[]) {
     printf("%s", text);
-    int input;
-    scanf("%d", &input);
+    float input;
+    scanf("%f", &input);
     printf("\n");
     return input;
 }
@@ -15,6 +15,7 @@ int main_resistance() {
     const float r1 = input_resistance("Enter resitance of resistor 1:");
     const float r2 = input_resistance("Enter resitance of resistor 2:");
 
+    // calculate total resistnace
     const float total_resistance = 1 / (1 / r1 + 1 / r2);
 
     printf("The total resistance is %.4E", total_resistance);
