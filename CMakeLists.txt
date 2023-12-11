@@ -10,4 +10,5 @@ add_executable(untitled 02/line-interest.c
         03/multitable.c
         03/factorial.c
         03/resistance.c
-        03/easter.c)
+        03/easter.c
+        04/bigdivision.c)
