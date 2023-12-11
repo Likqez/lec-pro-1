@@ -47,7 +47,7 @@ void body_mutli() {
     }
 }
 
-int main() {
+int main_multi() {
     calculate_multi();
     header_multi();
     body_mutli();
