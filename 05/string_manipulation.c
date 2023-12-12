@@ -13,20 +13,33 @@
 void mystrcopy(char destination[], char source[]) {
     int counter = 0;
     char character = source[counter];
+    const int dest_size = sizeof(destination) / sizeof(char);
 
     while (character != '\0') {
+        // check if destination is full
+        if (dest_size <= counter) {
+            destination[counter] = '\0';
+            return;
+        }
         destination[counter] = character;
         counter++;
         character = source[counter];
     }
+    destination[counter] = '\0';
 }
 
-void leftstr(char * target, const char * source, size_t n) {
+void leftstr(char* target, const char* source, size_t n) {
     int counter = 0;
     char character = source[counter];
+    const int target_size = sizeof(target) / sizeof(char);
 
     while (character != '\0') {
-        if(counter == n) {
+        if (counter == n - 1) {
+            target[counter] = '\0';
+            return;
+        }
+        // check if target is full
+        if (target_size <= counter) {
             target[counter] = '\0';
             return;
         }
@@ -34,14 +47,18 @@ void leftstr(char * target, const char * source, size_t n) {
         counter++;
         character = source[counter];
     }
+    target[counter] = '\0';
 }
 
-void reverstr(char * target, const char * source) {
+void reverstr(char* target, const char* source) {
     int lenght = 0;
     char character = source[lenght];
+    const int target_size = sizeof(target) / sizeof(char);
 
     // count length of source
     while (character != '\0') {
+        // check if target is full
+        if (target_size <= lenght) break;
         lenght++;
         character = source[lenght];
     }
@@ -50,15 +67,21 @@ void reverstr(char * target, const char * source) {
     for (int i = lenght - 1; i >= 0; --i) {
         target[lenght - i - 1] = source[i];
     }
+    target[lenght] = '\0';
 }
 
-void upstr(char * target, const char * source) {
+void upstr(char* target, const char* source) {
     int counter = 0;
     char character = source[counter];
+    const int target_size = sizeof(target) / sizeof(char);
 
     while (character != '\0') {
+        if (target_size <= counter) {
+            target[counter] = '\0';
+            return;
+        }
 
-        if(character <= ASCII_LOWERCASE_END && character >= ASCII_LOWERCASE_START) {
+        if (character <= ASCII_LOWERCASE_END && character >= ASCII_LOWERCASE_START) {
             target[counter] = character - ASCII_LOWERCASE_UPPERCASE_DIFFERENCE;
         } else {
             target[counter] = character;
@@ -69,13 +92,18 @@ void upstr(char * target, const char * source) {
     }
 }
 
-void lowstr(char * target, const char * source) {
+void lowstr(char* target, const char* source) {
     int counter = 0;
     char character = source[counter];
+    const int target_size = sizeof(target) / sizeof(char);
 
     while (character != '\0') {
+        if (target_size <= counter) {
+            target[counter] = '\0';
+            return;
+        }
 
-        if(character <= ASCII_UPPERCASE_END && character >= ASCII_UPPERCASE_START) {
+        if (character <= ASCII_UPPERCASE_END && character >= ASCII_UPPERCASE_START) {
             target[counter] = character + ASCII_LOWERCASE_UPPERCASE_DIFFERENCE;
         } else {
             target[counter] = character;
@@ -86,23 +114,24 @@ void lowstr(char * target, const char * source) {
     }
 }
 
-int main() {
-    char source[] = "Hello World";
+int main_string_mani() {
+    char source[20];
+    scanf("%s", &source);
     char destination[20];
 
-    mystrcopy(destination,source);
+    mystrcopy(destination, source);
     printf("Full copy: %s\n", destination);
 
-    leftstr(destination,source, 3);
+    leftstr(destination, source, 3);
     printf("Left copy: %s\n", destination);
 
-    reverstr(destination,source);
+    reverstr(destination, source);
     printf("Reversed: %s\n", destination);
 
-    upstr(destination,source);
+    upstr(destination, source);
     printf("Upper: %s\n", destination);
 
-    lowstr(destination,source);
+    lowstr(destination, source);
     printf("Lower: %s\n", destination);
 
     return 0;
