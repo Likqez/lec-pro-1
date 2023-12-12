@@ -7,6 +7,8 @@
 #define ASCII_LOWERCASE_UPPERCASE_DIFFERENCE 32
 #define ASCII_LOWERCASE_START 97
 #define ASCII_LOWERCASE_END 122
+#define ASCII_UPPERCASE_START 65
+#define ASCII_UPPERCASE_END 90
 
 void mystrcopy(char destination[], char source[]) {
     int counter = 0;
@@ -67,7 +69,24 @@ void upstr(char * target, const char * source) {
     }
 }
 
-int main_str_manipulation() {
+void lowstr(char * target, const char * source) {
+    int counter = 0;
+    char character = source[counter];
+
+    while (character != '\0') {
+
+        if(character <= ASCII_UPPERCASE_END && character >= ASCII_UPPERCASE_START) {
+            target[counter] = character + ASCII_LOWERCASE_UPPERCASE_DIFFERENCE;
+        } else {
+            target[counter] = character;
+        }
+
+        counter++;
+        character = source[counter];
+    }
+}
+
+int main() {
     char source[] = "Hello World";
     char destination[20];
 
@@ -82,6 +101,9 @@ int main_str_manipulation() {
 
     upstr(destination,source);
     printf("Upper: %s\n", destination);
+
+    lowstr(destination,source);
+    printf("Lower: %s\n", destination);
 
     return 0;
 }
