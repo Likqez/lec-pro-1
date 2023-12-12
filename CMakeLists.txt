@@ -14,4 +14,5 @@ add_executable(untitled 02/line-interest.c
         04/bigdivision.c
         04/multitable_array.c
         04/euklid_ptr.c
-        04/multitable_array_ptr.c)
+        04/multitable_array_ptr.c
+        05/number_conversion.c)
