@@ -16,7 +16,7 @@ int main_conversion() {
 
 void convert_to_binary(int decimal_number) {
     if (decimal_number != 0) {
-        printf("%i", decimal_number % 2);
         convert_to_binary(decimal_number/2);
+        printf("%i", decimal_number % 2);
     }
 }
