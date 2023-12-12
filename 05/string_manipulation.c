@@ -72,16 +72,16 @@ int main_str_manipulation() {
     char destination[20];
 
     mystrcopy(destination,source);
-    printf("%s\n", destination);
+    printf("Full copy: %s\n", destination);
 
     leftstr(destination,source, 3);
-    printf("%s\n", destination);
+    printf("Left copy: %s\n", destination);
 
     reverstr(destination,source);
-    printf("%s\n", destination);
+    printf("Reversed: %s\n", destination);
 
     upstr(destination,source);
-    printf("%s\n", destination);
+    printf("Upper: %s\n", destination);
 
     return 0;
 }
