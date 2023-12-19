@@ -70,7 +70,7 @@ void play_single(const int random_number) {
     }
 }
 
-int main() {
+int main_rand_game() {
     ask_multi_or_single();
     if (mode == 2) {
         min = 1;
