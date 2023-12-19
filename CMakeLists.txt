@@ -18,4 +18,5 @@ add_executable(untitled 02/line-interest.c
         05/number_conversion.c
         05/to_the_power_of.c
         05/number_prompts.c
-        05/string_manipulation.c)
+        05/string_manipulation.c
+        06/random_num_game.c)
