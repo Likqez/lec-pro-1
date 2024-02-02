@@ -8,6 +8,17 @@ void swap(int* a, int* b) {
     *b = temp;
 }
 
+typedef struct NODE {
+    int data;
+    struct NODE* next;
+} NODE;
+
+void swap_linked_list(NODE* a, NODE* b) {
+    const int temp = a->data;
+    a->data = b->data;
+    b->data = temp;
+}
+
 // Insertion Sort
 void insertionSort(int arr[], int size) {
     for (int i = 1; i < size; ++i) {
@@ -46,6 +57,21 @@ void selectionSort(int arr[], int size) {
             }
         }
         swap(&arr[i], &arr[minIndex]);
+    }
+}
+
+void selectionSort_list(NODE* head) {
+    NODE* current = head;
+    while (current->next != NULL) {
+        NODE* min = current;
+        NODE* r = current->next;
+        while (r != NULL) {
+            if (min->data > r->data)
+                min = r;
+            r = r->next;
+        }
+        swap_linked_list(min, current);
+        current = current->next;
     }
 }
 
@@ -157,7 +183,8 @@ void radixSort(int arr[], int size) {
         countSort(arr, size, exp);
 }
 
-# define MAX_BiG_SORT 100000
+# define MAX_BiG_SORT 100000-1
+
 
 int main() {
     int arrBub[] = {64, 25, 12, 22, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 99};
@@ -170,14 +197,30 @@ int main() {
     int arrQuick100k[MAX_BiG_SORT];
     int arrMerge100k[MAX_BiG_SORT];
     int arrRadix100k[MAX_BiG_SORT];
+    const NODE* head = &(NODE){0, NULL};
+    NODE* temp = (NODE*)head;
 
     for (int i = 0; i < MAX_BiG_SORT; ++i) {
         const int value = rand() * rand() % 100000;
         arrQuick100k[i] = value;
         arrMerge100k[i] = value;
         arrRadix100k[i] = value;
+
+        temp->next = malloc(sizeof(NODE));
+        temp->next->data = value;
+        temp->next->next = NULL;
+        temp = temp->next;
+
         //printf("%i", arrQuick100k[i]);
     }
+
+    temp = (NODE*)head;
+    long long count = 0;
+    while (temp != NULL) {
+        temp = temp->next;
+        count++;
+    }
+    printf("Depths of list: %lli \n", count);
 
     struct timespec start, end;
     int size = sizeof(arrBub) / sizeof(arrBub[0]);
@@ -207,7 +250,7 @@ int main() {
     }
 
     clock_gettime(CLOCK_REALTIME, &start);
-    selectionSort(arrSel, size);
+    selectionSort_list(head);
     clock_gettime(CLOCK_REALTIME, &end);
 
     printf("\nSorted selection array:(%llins)", (diff_timespec(start, end).tv_nsec));
@@ -239,7 +282,7 @@ int main() {
     mergeSort(arrMerge100k, 0, MAX_BiG_SORT - 1);
     clock_gettime(CLOCK_REALTIME, &end);
 
-    printf("\nSorted 100k merge array in (%lims)", (diff_timespec(start, end).tv_nsec/1000));
+    printf("\nSorted 100k merge array in (%lius)", (diff_timespec(start, end).tv_nsec / 1000));
     for (int i = 0; i < MAX_BiG_SORT; ++i) {
         //printf("%d ", arrMerge100k[i]);
     }
@@ -248,13 +291,20 @@ int main() {
     quickSort(arrQuick100k, 0, MAX_BiG_SORT - 1);
     clock_gettime(CLOCK_REALTIME, &end);
 
-   printf("\nSorted 100k quick array in (%llims)", (diff_timespec(start, end).tv_nsec/1000));
+    printf("\nSorted 100k quick array in (%llius)", (diff_timespec(start, end).tv_nsec / 1000));
 
     clock_gettime(CLOCK_REALTIME, &start);
     quickSort(arrRadix100k, 0, MAX_BiG_SORT - 1);
     clock_gettime(CLOCK_REALTIME, &end);
 
-    printf("\nSorted 100k radix array in (%llims)", (diff_timespec(start, end).tv_nsec/1000));
+    printf("\nSorted 100k radix array in (%llius)", (diff_timespec(start, end).tv_nsec / 1000));
+
+    NODE* current = head;
+    while (current != NULL) {
+        NODE* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
