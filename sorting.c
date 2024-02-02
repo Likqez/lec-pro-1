@@ -125,6 +125,38 @@ void quickSort(int arr[], int low, int high) {
     }
 }
 
+
+int getMax(int arr[], int size) {
+    int max = arr[0];
+    for (int i = 1; i < size; i++)
+        if (arr[i] > max)
+            max = arr[i];
+    return max;
+}
+
+void countSort(int arr[], int size, int exp) {
+    const int RADIX = 10; // The number of possible digits (0-9)
+    int output[size];
+    int count[RADIX] = {};
+    for (int i = 0; i < size; i++)
+        count[(arr[i] / exp) % RADIX]++;
+    for (int i = 1; i < RADIX; i++)
+        count[i] += count[i - 1];
+    for (int i = size - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % RADIX] - 1] = arr[i];
+        count[(arr[i] / exp) % RADIX]--;
+    }
+    for (int i = 0; i < size; i++)
+        arr[i] = output[i];
+}
+
+// Radix Sort
+void radixSort(int arr[], int size) {
+    int max = getMax(arr, size);
+    for (int exp = 1; max / exp > 0; exp *= 10)
+        countSort(arr, size, exp);
+}
+
 # define MAX_BiG_SORT 100000
 
 int main() {
@@ -137,10 +169,13 @@ int main() {
 
     int arrQuick100k[MAX_BiG_SORT];
     int arrMerge100k[MAX_BiG_SORT];
+    int arrRadix100k[MAX_BiG_SORT];
 
     for (int i = 0; i < MAX_BiG_SORT; ++i) {
-        arrQuick100k[i] = rand()* rand() % 100000;
-        arrMerge100k[i] = rand() * rand() % 100000;
+        const int value = rand() * rand() % 100000;
+        arrQuick100k[i] = value;
+        arrMerge100k[i] = value;
+        arrRadix100k[i] = value;
         //printf("%i", arrQuick100k[i]);
     }
 
@@ -201,7 +236,7 @@ int main() {
     // 100k
 
     clock_gettime(CLOCK_REALTIME, &start);
-    mergeSort(arrMerge100k, 0, MAX_BiG_SORT-1);
+    mergeSort(arrMerge100k, 0, MAX_BiG_SORT - 1);
     clock_gettime(CLOCK_REALTIME, &end);
 
     printf("\nSorted 100k merge array in (%lims)", (diff_timespec(start, end).tv_nsec/1000));
@@ -209,11 +244,17 @@ int main() {
         //printf("%d ", arrMerge100k[i]);
     }
 
-   clock_gettime(CLOCK_REALTIME, &start);
-   quickSort(arrQuick100k, 0, MAX_BiG_SORT - 1);
-   clock_gettime(CLOCK_REALTIME, &end);
+    clock_gettime(CLOCK_REALTIME, &start);
+    quickSort(arrQuick100k, 0, MAX_BiG_SORT - 1);
+    clock_gettime(CLOCK_REALTIME, &end);
 
    printf("\nSorted 100k quick array in (%llims)", (diff_timespec(start, end).tv_nsec/1000));
+
+    clock_gettime(CLOCK_REALTIME, &start);
+    quickSort(arrRadix100k, 0, MAX_BiG_SORT - 1);
+    clock_gettime(CLOCK_REALTIME, &end);
+
+    printf("\nSorted 100k radix array in (%llims)", (diff_timespec(start, end).tv_nsec/1000));
 
     return 0;
 }
