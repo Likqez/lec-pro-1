@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #define MAX_SIZE 5
@@ -12,9 +13,11 @@ typedef struct card {
     int age, height, weight;
     char eye_color[11];
     struct tm date_of_birth;
+    struct card* next;
 } CARD;
 
-CARD cards[MAX_SIZE];
+CARD* head;
+CARD* tail;
 
 void print_card_struc(CARD card) {
     printf("ID: %d\n", card.id);
@@ -28,9 +31,10 @@ void print_card_struc(CARD card) {
            card.date_of_birth.tm_year + 1900);
 }
 
-void print_cards(CARD cards[], int size) {
-    for(int i = 0; i < size; i++) {
-        print_card_struc(cards[i]);
+void print_cards(CARD* card) {
+    while (card != NULL) {
+        print_card_struc(*card);
+        card = card->next;
     }
 }
 
@@ -66,15 +70,34 @@ CARD input_card() {
 }
 
 
-int main() {
+int main_file_cards() {
     char continue_input = 'y';
     for(int i = 0; i < MAX_SIZE; i++) {
-        cards[i] = input_card();
+        CARD card= input_card();
+
+        if(head == NULL) {
+            head = &card;
+            tail = &card;
+        } else {
+            tail->next = &card;
+            tail = &card;
+        }
+
         printf("Do you want to continue? (y/n): ");
         scanf(" %c", &continue_input);
         if(continue_input == 'n') {
             break;
         }
     }
+
+    print_cards(head);
+
+    while (head != NULL) {
+        CARD* next = head->next;
+        free(head);
+        head = next;
+    }
+    free(tail);
+
     return 0;
 }
