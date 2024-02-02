@@ -48,6 +48,19 @@ void selectionSort(int arr[], int size) {
     }
 }
 
+struct timespec diff_timespec(struct timespec start, struct timespec end)
+{
+    struct timespec temp;
+    if ((end.tv_nsec - start.tv_nsec) < 0) {
+        temp.tv_sec = end.tv_sec - start.tv_sec - 1;
+        temp.tv_nsec = 1000000000 + end.tv_nsec - start.tv_nsec;
+    } else {
+        temp.tv_sec = end.tv_sec - start.tv_sec;
+        temp.tv_nsec = end.tv_nsec - start.tv_nsec;
+    }
+    return temp;
+}
+
 int main() {
 
     int  arrBub[] = {64, 25, 12, 22, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 99};
@@ -59,24 +72,31 @@ int main() {
     for (int i = 0; i < size; ++i) {
         printf("%d ", arrBub[i]);
     }
-
+    struct timespec start,end;
+    clock_gettime(CLOCK_REALTIME, &start);
     bubbleSort(arrBub, size);
+    clock_gettime(CLOCK_REALTIME, &end);
 
-    printf("\nSorted bubble    array:");
+
+    printf("\nSorted bubble (%llins)   array:", (diff_timespec(start,end).tv_nsec));
     for (int i = 0; i < size; ++i) {
         printf("%d ", arrBub[i]);
     }
 
+    clock_gettime(CLOCK_REALTIME, &start);
     insertionSort(arrIns, size);
+    clock_gettime(CLOCK_REALTIME, &end);
 
-    printf("\nSorted insertion array:");
+    printf("\nSorted insertion array: (%llins)",(diff_timespec(start,end).tv_nsec));
     for (int i = 0; i < size; ++i) {
         printf("%d ", arrIns[i]);
     }
 
+    clock_gettime(CLOCK_REALTIME, &start);
     selectionSort(arrSel, size);
+    clock_gettime(CLOCK_REALTIME, &end);
 
-    printf("\nSorted selection array:");
+    printf("\nSorted selection array:(%llins)",(diff_timespec(start,end).tv_nsec));
     for (int i = 0; i < size; ++i) {
         printf("%d ", arrSel[i]);
     }
